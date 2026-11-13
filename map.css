@@ -36,7 +36,7 @@ main { flex: 1; min-width: 0; }
   stroke: #fff;
   stroke-width: 1.25;
   pointer-events: auto;
-  cursor: help;
+  cursor: pointer;
 }
 #map circle:hover { fill-opacity: 0.98; stroke-width: 2; }
 .legend { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75em 1.5em; margin-block: 1em 0.4em; }
@@ -59,4 +59,19 @@ footer { padding-top: 0.5em; font-size: 0.82em; color: #677880; }
   .time-filter { margin-left: 0; }
   .legend { gap: 0.55em 0.85em; }
   .legend-title { flex-basis: 100%; }
+}
+
+.station-tooltip {
+  position: absolute;
+  z-index: 10;
+  display: none;
+  pointer-events: none;
+  transform: translate(-50%, calc(-100% - 12px));
+  padding: 8px 12px;
+  background: #1f2937;
+  color: white;
+  border-radius: 6px;
+  font-size: 14px;
+  max-width: 300px;
+  box-shadow: 0 3px 10px #0003;
 }

@@ -31,6 +31,30 @@ const map = new mapboxgl.Map({
 });
 map.addControl(new mapboxgl.NavigationControl(), 'top-left');
 
+const tooltip = d3.select('#map')
+  .append('div')
+  .attr('class', 'station-tooltip');
+
+function showTooltip(event, d) {
+  tooltip
+    .style('display', 'block')
+    .text(
+      `${d.name}: ${d.totalTraffic.toLocaleString()} trips ` +
+      `(${d.departures.toLocaleString()} departures, ` +
+      `${d.arrivals.toLocaleString()} arrivals)`
+    );
+
+  moveTooltip(event);
+}
+
+function moveTooltip(event) {
+  const mapBounds = document.querySelector('#map').getBoundingClientRect();
+
+  tooltip
+    .style('left', `${event.clientX - mapBounds.left}px`)
+    .style('top', `${event.clientY - mapBounds.top}px`);
+}
+
 // Step 3.3: project longitude and latitude onto the Mapbox pixel canvas.
 function getCoords(station) {
   const point = new mapboxgl.LngLat(+station.lon, +station.lat);
@@ -159,7 +183,10 @@ map.on('load', async () => {
         d3.select(this)
           .append('title')
           .text(`${d.name}: ${d.totalTraffic} trips (${d.departures} departures, ${d.arrivals} arrivals)`);
-      });
+      })
+      .on('mouseenter', showTooltip)
+      .on('mousemove', moveTooltip)
+      .on('mouseleave', () => tooltip.style('display', 'none'));
 
     function updatePositions() {
       circles
